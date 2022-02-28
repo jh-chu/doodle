@@ -1,4 +1,4 @@
-package net.doodle.web.board;
+package net.doodle.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
