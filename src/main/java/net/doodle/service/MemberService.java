@@ -2,9 +2,14 @@ package net.doodle.service;
 
 import net.doodle.dto.MemberDTO;
 
+import java.util.Optional;
+
 public interface MemberService {
-    Long join(String id, String pwd, String name);
-    MemberDTO get(Long memberId);
-    Long update();
-    void delete();
+
+    Optional<MemberDTO> checkLogin(String loginId, String pwd);
+    Long join(String loginId, String pwd, String name);
+    MemberDTO getMember(String loginId);
+    void deleteMember(String loginId);
+
+    Long changePwd(String loginId, String pwd);
 }

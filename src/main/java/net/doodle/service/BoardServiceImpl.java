@@ -74,7 +74,11 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public Long update(Long bno, String title, String content) {
-        return null;
+
+        Board board = boardRepository.findById(bno).orElseThrow(()->new RuntimeException("없는 게시글 입니다."));
+        board.changeTitleAndContent(title, content);
+
+        return board.getBno();
     }
 
 

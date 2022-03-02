@@ -26,4 +26,8 @@ public class Member extends BaseEntity{
 
     @OneToMany(mappedBy = "member")
     private List<Board> boardList = new ArrayList<>();
+
+    public void changePwd(String pwd) {
+        this.pwd = pwd;
+    }
 }

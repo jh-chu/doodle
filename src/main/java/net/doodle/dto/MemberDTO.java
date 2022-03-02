@@ -17,13 +17,13 @@ import java.util.List;
 public class MemberDTO {
 
     private Long mno;
-    private String id;
+    private String loginId;
     private String pwd;
     private String name;
 
     public MemberDTO(Member member) {
         mno = member.getMno();
-        id = member.getLoginId();
+        loginId = member.getLoginId();
         pwd = member.getPwd();
         name = member.getName();
     }

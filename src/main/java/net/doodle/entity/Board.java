@@ -28,4 +28,9 @@ public class Board extends BaseEntity{
 
     @OneToMany(mappedBy = "board")
     private List<Reply> replies = new ArrayList<>();
+
+    public void changeTitleAndContent(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

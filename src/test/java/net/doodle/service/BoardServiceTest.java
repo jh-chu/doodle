@@ -102,4 +102,22 @@ class BoardServiceTest {
 
     }
 
+    @Test
+    void update_테스트() {
+
+        String title = "changeTitle";
+        String content = "changeContent";
+
+        Board board = boardRepository.findAll().stream().findFirst().get();
+        board.changeTitleAndContent(title,content);
+
+        Long bno = board.getBno();
+
+        Board findBoard = boardRepository.findById(bno).get();
+
+        assertThat(findBoard.getTitle()).isEqualTo(title);
+        assertThat(findBoard.getContent()).isEqualTo(content);
+
+    }
+
 }
