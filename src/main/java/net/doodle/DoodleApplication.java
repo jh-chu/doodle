@@ -14,8 +14,4 @@ public class DoodleApplication {
 		SpringApplication.run(DoodleApplication.class, args);
 	}
 
-	@Bean
-	public ModelMapper modelMapper() {
-		return new ModelMapper();
-	}
 }

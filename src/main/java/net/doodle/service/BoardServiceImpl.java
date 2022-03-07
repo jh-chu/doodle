@@ -2,13 +2,11 @@ package net.doodle.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.doodle.controller.form.BoardForm;
 import net.doodle.dto.BoardDTO;
 import net.doodle.entity.Board;
 import net.doodle.entity.Member;
 import net.doodle.repository.BoardRepository;
 import net.doodle.repository.MemberRepository;
-import net.doodle.repository.ReplyRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -26,12 +24,11 @@ public class BoardServiceImpl implements BoardService{
 
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
-    private final ReplyRepository replyRepository;
 
 
     @Override
-    public Long create(Long writerId, String title, String content) {
-        Member writer = memberRepository.findById(writerId).orElseThrow(() -> {
+    public Long create(Long mno, String title, String content) {
+        Member writer = memberRepository.findById(mno).orElseThrow(() -> {
             throw new RuntimeException("존재하지 않는 회원입니다.");
         });
 
@@ -45,9 +42,9 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public BoardDTO get(Long boardId) {
+    public BoardDTO get(Long bno) {
 
-        Board findBoard = boardRepository.findById(boardId).orElseThrow(() -> {
+        Board findBoard = boardRepository.findById(bno).orElseThrow(() -> {
             throw new RuntimeException("존재하지 않는 게시글 입니다.");
         });
 
@@ -60,10 +57,9 @@ public class BoardServiceImpl implements BoardService{
     public Page<BoardDTO> getList(int page, int size) {
 
         Page<Board> result = boardRepository.findAll(PageRequest.of(page, size));
-        Pageable pageable = result.getPageable();
-        List<BoardDTO> content = result.get().map(BoardDTO::new).collect(Collectors.toList());
 
-        return new PageImpl<BoardDTO>(content, pageable, result.getTotalElements());
+        return result.map(BoardDTO::new);
+
     }
 
     @Override

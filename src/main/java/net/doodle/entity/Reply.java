@@ -27,4 +27,7 @@ public class Reply extends BaseEntity{
     @JoinColumn(name = "board_id")
     private Board board;
 
+    public void changeContent(String content) {
+        this.content = content;
+    }
 }

@@ -28,6 +28,6 @@ public class BoardDTO {
         content = board.getContent();
 
         regDate = board.getRegDate();
-        memberDTO = new MemberDTO(board.getMember());
+        memberDTO = MemberDTO.ofIdAndName(board.getMember());
     }
 }

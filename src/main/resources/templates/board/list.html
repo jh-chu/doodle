@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+</head>
+<body>
+
+    <table>
+        <thead>
+            <tr>
+                <th>title</th>
+                <th>writer</th>
+                <th>regDate</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="dto : ${result.dtoList}">
+                <td th:text="${dto.title}"></td>
+                <td th:text="${dto.memberDTO.name}"></td>
+                <td th:text="${dto.regDate}"></td>
+            </tr>
+        </tbody>
+
+    </table>
+
+
+<ul>
+    <li th:if="${result.prev}"> < </li>
+
+    <li th:each="page: ${result.pageList}"> [[${page}]]</li>
+
+    <li th:if="${result.next}"> > </li>
+</ul>
+
+</body>
+</html>

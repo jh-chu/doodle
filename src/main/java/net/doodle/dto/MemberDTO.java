@@ -28,4 +28,11 @@ public class MemberDTO {
         name = member.getName();
     }
 
+    public static MemberDTO ofIdAndName(Member member) {
+
+        return MemberDTO.builder()
+                .mno(member.getMno())
+                .name(member.getName())
+                .build();
+    }
 }
