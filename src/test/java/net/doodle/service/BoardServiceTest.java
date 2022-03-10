@@ -1,6 +1,5 @@
 package net.doodle.service;
 
-import net.doodle.dto.BoardDTO;
 import net.doodle.entity.Board;
 import net.doodle.entity.Member;
 import net.doodle.repository.BoardRepository;
@@ -67,7 +66,7 @@ class BoardServiceTest {
 
         int page = 0;
         int size = 10;
-        Page<BoardDTO> result = boardService.getList(page,size);
+        Page<Board> result = boardService.getList(page,size);
         assertThat(result.getTotalElements()).isEqualTo(9L);
     }
 
@@ -79,10 +78,10 @@ class BoardServiceTest {
         Long writerId = memberRepository.findByLoginId("chu1").get().getMno();
 
         Long boardId = boardService.create(writerId, title,content);
-        BoardDTO boardDTO = boardService.get(boardId);
+        Board board = boardService.getBoard(boardId).get();
 
-        assertThat(boardDTO.getTitle()).isEqualTo(title);
-        assertThat(boardDTO.getContent()).isEqualTo(content);
+        assertThat(board.getTitle()).isEqualTo(title);
+        assertThat(board.getContent()).isEqualTo(content);
     }
 
     @Test
@@ -97,7 +96,7 @@ class BoardServiceTest {
         assertThat(findBoard.isEmpty()).isTrue();
 
 
-        List<Board> list = boardRepository.findByMember(member);
+        List<Board> list = boardRepository.findByMemberId(member.getMno());
         assertThat(list.size()).isEqualTo(8);
 
     }

@@ -6,9 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.doodle.entity.Member;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 @Builder
 @NoArgsConstructor

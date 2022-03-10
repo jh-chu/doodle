@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.stream.IntStream;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class TestDataInit {
 

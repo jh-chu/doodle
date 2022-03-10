@@ -1,6 +1,5 @@
 package net.doodle.service;
 
-import net.doodle.dto.MemberDTO;
 import net.doodle.entity.Member;
 import net.doodle.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,8 +48,8 @@ class MemberServiceTest {
         String wrongPwd = "312";
         String name = "name1";
 
-        Optional<MemberDTO> successMember = memberService.checkLogin(id,pwd);
-        Optional<MemberDTO> failMember = memberService.checkLogin(id,wrongPwd);
+        Optional<Member> successMember = memberService.checkLogin(id,pwd);
+        Optional<Member> failMember = memberService.checkLogin(id,wrongPwd);
 
         assertThat(successMember.get().getLoginId()).isEqualTo(id);
         assertThat(successMember.get().getName()).isEqualTo(name);
@@ -87,14 +86,14 @@ class MemberServiceTest {
         String loginId = "chu1";
         String notExistsId = "chuuuu";
 
-        MemberDTO member = memberService.getMember(loginId);
+        Member member = memberService.getMember(loginId).get();
 
         assertThat(member.getPwd()).isEqualTo("123");
         assertThat(member.getName()).isEqualTo("name1");
 
-        assertThatThrownBy(()->{
-            memberService.getMember(notExistsId);
-        }).isInstanceOf(RuntimeException.class);
+        Optional<Member> notExistsMember = memberService.getMember(notExistsId);
+
+        assertThat(notExistsMember.isEmpty()).isTrue();
     }
 
     @Test
@@ -118,7 +117,7 @@ class MemberServiceTest {
 
         memberService.changePwd(loginId, pwd);
 
-        MemberDTO member = memberService.getMember(loginId);
+        Member member = memberService.getMember(loginId).get();
 
         assertThat(member.getPwd()).isEqualTo(pwd);
     }

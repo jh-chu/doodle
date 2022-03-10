@@ -5,11 +5,17 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class LoginForm {
+public class MemberUpdateForm {
 
     @NotBlank
-    private String id;
+    String id;
 
     @NotBlank
-    private String pwd;
+    String loginId;
+
+    @NotBlank
+    String pwd;
+
+    @NotBlank
+    String name;
 }

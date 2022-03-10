@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Slf4j
 @RequiredArgsConstructor
@@ -39,16 +41,16 @@ public class ReplyServiceImpl implements ReplyService{
         return reply.getRno();
     }
 
-    /**
-     * TODO : 2022.03.03 ReplyService 구현하기
-    */
-    public Page<ReplyDTO> getReplyList(int page, int size, Long bno) {
+    public Page<Reply> getReplyList(int page, int size, Long bno) {
 
-        Board board = boardRepository.findById(bno).orElseThrow(() -> new RuntimeException("존재하지 않는 게시글 입니다."));
-        Page<Reply> result = replyRepository.findByBoard(board, PageRequest.of(page, size));
-        Page<ReplyDTO> replies = result.map(ReplyDTO::new);
+        Optional<Board> board = boardRepository.findById(bno);
+        if(board.isPresent()) {
 
-        return replies;
+            Page<Reply> result = replyRepository.findByBoard(board.get(), PageRequest.of(page, size));
+            return result;
+        }
+
+        return Page.empty();
     }
 
     public void deleteById(Long rno) {

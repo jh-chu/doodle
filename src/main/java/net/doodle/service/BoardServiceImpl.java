@@ -8,13 +8,10 @@ import net.doodle.entity.Member;
 import net.doodle.repository.BoardRepository;
 import net.doodle.repository.MemberRepository;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 
 @Slf4j
@@ -42,23 +39,17 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public BoardDTO get(Long bno) {
+    public Optional<Board> getBoard(Long bno) {
 
-        Board findBoard = boardRepository.findById(bno).orElseThrow(() -> {
-            throw new RuntimeException("존재하지 않는 게시글 입니다.");
-        });
+        return boardRepository.findById(bno);
 
-        BoardDTO boardDTO = new BoardDTO(findBoard);
-
-        return boardDTO;
     }
 
     @Override
-    public Page<BoardDTO> getList(int page, int size) {
+    public Page<Board> getList(int page, int size) {
 
-        Page<Board> result = boardRepository.findAll(PageRequest.of(page, size));
+        return boardRepository.findAll(PageRequest.of(page, size));
 
-        return result.map(BoardDTO::new);
 
     }
 
@@ -71,7 +62,7 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public Long update(Long bno, String title, String content) {
 
-        Board board = boardRepository.findById(bno).orElseThrow(()->new RuntimeException("없는 게시글 입니다."));
+        Board board = boardRepository.findById(bno).orElseThrow(()->new RuntimeException("없는 게시글 입니다. " + bno));
         board.changeTitleAndContent(title, content);
 
         return board.getBno();

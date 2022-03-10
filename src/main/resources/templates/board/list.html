@@ -19,7 +19,7 @@
             <tr th:each="dto : ${result.dtoList}">
                 <td th:text="${dto.title}"></td>
                 <td th:text="${dto.memberDTO.name}"></td>
-                <td th:text="${dto.regDate}"></td>
+                <td th:text="${#temporals.format(dto.regDate,'MM-dd HH:mm:ss')}"></td>
             </tr>
         </tbody>
 

@@ -3,12 +3,12 @@ package net.doodle.dto;
 import lombok.Data;
 
 @Data
-public class PageRequest {
+public class PageRequestDTO {
 
     int page;
     int size;
 
-    public PageRequest() {
+    public PageRequestDTO() {
         page = 1;
         size = 10;
     }

@@ -2,7 +2,6 @@ package net.doodle.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.doodle.dto.MemberDTO;
 import net.doodle.entity.Member;
 import net.doodle.repository.MemberRepository;
 import org.springframework.stereotype.Service;
@@ -17,10 +16,18 @@ public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
 
     @Override
-    public Optional<MemberDTO> checkLogin(String id, String pwd) {
+    public Optional<Member> checkLogin(String id, String pwd) {
 
-        Optional<MemberDTO> checkMember = memberRepository.findByLoginId(id)
-                .filter(member -> member.getPwd().equals(pwd)).map(MemberDTO::new);
+        Optional<Member> checkMember = memberRepository.findByLoginId(id);
+
+        if(checkMember.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Member member = checkMember.get();
+        if(!member.getPwd().equals(pwd)) {
+            return Optional.empty();
+        }
 
         return checkMember;
     }
@@ -45,11 +52,16 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public MemberDTO getMember(String loginId) {
+    public Optional<Member> getMember(String loginId) {
 
-        return memberRepository.findByLoginId(loginId)
-                .map(MemberDTO::new)
-                .orElseThrow(() -> new RuntimeException("존재 하지 않는 회원입니다."));
+        return memberRepository.findByLoginId(loginId);
+
+    }
+
+    @Override
+    public Optional<Member> getMember(Long id) {
+
+        return memberRepository.findById(id);
 
     }
 
@@ -61,11 +73,23 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
+    public void deleteMember(Long id) {
+
+        memberRepository.deleteById(id);
+
+    }
+
+    @Override
     public Long changePwd(String loginId, String pwd) {
 
         Member member = memberRepository.findByLoginId(loginId).orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
         member.changePwd(pwd);
 
         return member.getMno();
+    }
+
+    @Override
+    public void updateMember() {
+
     }
 }

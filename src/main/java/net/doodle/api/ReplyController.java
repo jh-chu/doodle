@@ -3,6 +3,7 @@ package net.doodle.api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.doodle.dto.ReplyDTO;
+import net.doodle.entity.Reply;
 import net.doodle.service.BoardService;
 import net.doodle.service.ReplyService;
 import org.springframework.data.domain.Page;
@@ -20,9 +21,10 @@ public class ReplyController {
     @GetMapping("/{bno}")
     public Page<ReplyDTO> getReplyList(@PathVariable("bno") Long bno) {
 
-        Page<ReplyDTO> replies = replyService.getReplyList(0, 10, bno);
+        Page<Reply> result = replyService.getReplyList(0, 10, bno);
 
-        return replies;
+        return result.map(ReplyDTO::new);
+
     }
 
     @DeleteMapping("/{rno}")

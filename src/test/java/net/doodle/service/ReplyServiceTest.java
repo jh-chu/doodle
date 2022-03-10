@@ -68,7 +68,7 @@ class ReplyServiceTest {
         //given
         Member member = memberRepository.findByLoginId("chu1").get();
         Member member2 = memberRepository.findByLoginId("chu2").get();
-        Board board = boardRepository.findByMember(member).get(0);
+        Board board = boardRepository.findByMemberId(member.getMno()).get(0);
         String content1 = "content1";
         String content2 = "content2";
 
@@ -91,7 +91,7 @@ class ReplyServiceTest {
     void getReplyList_테스트() {
         //given
         Member member = memberRepository.findByLoginId("chu1").get();
-        Board board = boardRepository.findByMember(member).get(0);
+        Board board = boardRepository.findByMemberId(member.getMno()).get(0);
         String content = "content";
 
         IntStream.rangeClosed(1,19).forEach(
@@ -99,8 +99,8 @@ class ReplyServiceTest {
         );
 
         //when
-        List<ReplyDTO> firstPage = replyService.getReplyList(0, 10, board.getBno()).getContent();
-        List<ReplyDTO> secondPage = replyService.getReplyList(1, 10, board.getBno()).getContent();
+        List<Reply> firstPage = replyService.getReplyList(0, 10, board.getBno()).getContent();
+        List<Reply> secondPage = replyService.getReplyList(1, 10, board.getBno()).getContent();
 
         //then
         assertThat(firstPage.size()).isEqualTo(10);
@@ -112,14 +112,14 @@ class ReplyServiceTest {
     void deleteById_테스트() {
         //given
         Member member = memberRepository.findByLoginId("chu1").get();
-        Board board = boardRepository.findByMember(member).get(0);
+        Board board = boardRepository.findByMemberId(member.getMno()).get(0);
         String content = "content";
 
         IntStream.rangeClosed(1,19).forEach(
                 (cnt)->replyService.addReply(member.getMno(), board.getBno(), content+cnt)
         );
 
-        List<ReplyDTO> list = replyService.getReplyList(0, 10, board.getBno()).getContent();
+        List<Reply> list = replyService.getReplyList(0, 10, board.getBno()).getContent();
         Long reply1 = list.get(0).getRno();
         Long reply2 = list.get(1).getRno();
 
@@ -137,7 +137,7 @@ class ReplyServiceTest {
     void update_테스트() {
         //given
         Member member = memberRepository.findByLoginId("chu1").get();
-        Board board = boardRepository.findByMember(member).get(0);
+        Board board = boardRepository.findByMemberId(member.getMno()).get(0);
         String content = "content";
         String update = "update";
         Long replyId = replyService.addReply(member.getMno(), board.getBno(), content);
