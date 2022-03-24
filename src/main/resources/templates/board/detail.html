@@ -1,10 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout/base :: layout(~{::title},~{::section})">
 <head>
-    <meta charset="UTF-8">
     <title>detail</title>
 </head>
 <body>
+    <section class="container">
+        <div th:text="${board.title}">title</div>
+        <div th:text="${board.regDate}">regDate</div>
+        <div th:text="${board.writer}">writer</div>
+        <div th:text="${board.content}">content</div>
 
+
+        <div class="container" th:each="reply : ${replies}">
+            <div th:text="${reply.writer}">작성자</div>
+            <div th:text="${reply.content}">댓글내용</div>
+        </div>
+
+        <nav th:class="navbar" aria-label="Page navigation" style="text-align: center;">
+            <ul th:class="pagination"
+                th:with="startNumber=${T(java.lang.Math).floor(replies.number/10)} * 10 + 1,endNumber=(${replies.totalPages} > ${startNumber} + 9) ? ${startNumber} + 9 : ${replies.totalPages}">
+
+                <li th:style="${replies.first} ? 'display:none'">
+                    <a href="#">&laquo;</a>
+                </li>
+                <li th:style="${replies.first} ? 'display:none'">
+                    <a th:href="@{/board(page=${replies.number})}">&lsaquo;</a>
+                </li>
+                <li th:each="page : ${#numbers.sequence(startNumber, endNumber)}"
+                    th:class="(${page} == ${replies.number} + 1) ? 'page-item active': 'page-item' ">
+                    <a th:href="@{/board(page=${page})}" th:text="${page}">
+                        <span class="sr-only"></span>
+                    </a>
+                </li>
+                <li th:style="${replies.last} ? 'display:none'">
+                    <a th:href="@{/board(page=${replies.number} + 2)}">&rsaquo;</a>
+                </li>
+                <li th:style="${replies.last} ? 'display:none'">
+                    <a th:href="@{/board(page=${replies.totalPages})}">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
+    </section>
 </body>
 </html>

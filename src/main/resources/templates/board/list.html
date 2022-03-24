@@ -1,38 +1,54 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout/base :: layout(~{::title},~{::section})">
 <head>
-    <meta charset="UTF-8">
-    <title>index</title>
+    <title>리스트</title>
 </head>
 <body>
-
-    <table>
+<section class="container">
+    <table th:class="table">
         <thead>
-            <tr>
-                <th>title</th>
-                <th>writer</th>
-                <th>regDate</th>
-            </tr>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">title</th>
+            <th scope="col">writer</th>
+            <th scope="col">regDate</th>
+        </tr>
         </thead>
-
         <tbody>
-            <tr th:each="dto : ${result.dtoList}">
-                <td th:text="${dto.title}"></td>
-                <td th:text="${dto.memberDTO.name}"></td>
-                <td th:text="${#temporals.format(dto.regDate,'MM-dd HH:mm:ss')}"></td>
-            </tr>
+        <tr th:each="dto : ${result.content}">
+            <th scope="row">1</th>
+            <td th:text="${dto.title}"></td>
+            <td th:text="${dto.writer}"></td>
+            <td th:text="${#temporals.format(dto.regDate,'MM-dd HH:mm:ss')}"></td>
+        </tr>
         </tbody>
-
     </table>
 
+    <nav th:class="navbar" aria-label="Page navigation" style="text-align: center;">
+        <ul th:class="pagination"
+            th:with="startNumber=${T(java.lang.Math).floor(result.number/10)} * 10 + 1,endNumber=(${result.totalPages} > ${startNumber} + 9) ? ${startNumber} + 9 : ${result.totalPages}">
 
-<ul>
-    <li th:if="${result.prev}"> < </li>
-
-    <li th:each="page: ${result.pageList}"> [[${page}]]</li>
-
-    <li th:if="${result.next}"> > </li>
-</ul>
+            <li th:style="${result.first} ? 'display:none'">
+                <a href="#">&laquo;</a>
+            </li>
+            <li th:style="${result.first} ? 'display:none'">
+                <a th:href="@{/board(page=${result.number})}">&lsaquo;</a>
+            </li>
+            <li th:each="page : ${#numbers.sequence(startNumber, endNumber)}"
+                th:class="(${page} == ${result.number} + 1) ? 'page-item active': 'page-item' ">
+                <a th:href="@{/board(page=${page})}" th:text="${page}">
+                    <span class="sr-only"></span>
+                </a>
+            </li>
+            <li th:style="${result.last} ? 'display:none'">
+                <a th:href="@{/board(page=${result.number} + 2)}">&rsaquo;</a>
+            </li>
+            <li th:style="${result.last} ? 'display:none'">
+                <a th:href="@{/board(page=${result.totalPages})}">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+</section>
 
 </body>
 </html>

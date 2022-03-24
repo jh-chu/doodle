@@ -1,16 +1,17 @@
 package net.doodle;
 
 import lombok.RequiredArgsConstructor;
-import net.doodle.entity.Board;
-import net.doodle.entity.Member;
-import net.doodle.repository.BoardRepository;
-import net.doodle.repository.MemberRepository;
+import net.doodle.domain.board.Board;
+import net.doodle.domain.member.Member;
+import net.doodle.domain.board.BoardRepository;
+import net.doodle.domain.member.MemberRepository;
 import org.springframework.stereotype.Component;
+
 
 import javax.annotation.PostConstruct;
 import java.util.stream.IntStream;
 
-//@Component
+@Component
 @RequiredArgsConstructor
 public class TestDataInit {
 
